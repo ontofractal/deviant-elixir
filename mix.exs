@@ -2,7 +2,7 @@ defmodule DeviantArt.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :deviant_art,
+    [app: :deviant_elixir,
      version: "0.0.1",
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
@@ -39,7 +39,7 @@ defmodule DeviantArt.Mixfile do
   defp description do
     """
     WIP. Unstable alpha.
-    Elixir API wrapper for Deviant Art. At this moment provides only RSS feeds interface.
+    Elixir API wrapper for Deviant Art. At this moment provides only RSS feeds intergac.
     """
   end
 
