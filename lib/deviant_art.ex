@@ -2,7 +2,7 @@ defmodule DeviantArt do
   use HTTPoison.Base
 
   @doc """
-  Returns %FeederEx.Feed{} with multiple embedded %FeederEx.Entry{}
+  Returns {:ok, feed} or {:error, error/response} where feed is %FeederEx.Feed{} with multiple embedded %FeederEx.Entry{}
   Example of %FeederEx.Entry{}:
   %FeederEx.Entry{author: nil, duration: nil, enclosure: nil,
      id: "http://thedanimator.deviantart.com/art/Frog-and-Toad-are-Holmes-44279804",
@@ -18,9 +18,16 @@ defmodule DeviantArt do
     url = "http://backend.deviantart.com/rss.xml?type=deviation&q=#{sort}:#{cat}+#{q}&offset=#{offset}"
       |> URI.encode
 
-    {:ok, %HTTPoison.Response{body: body}} = DeviantArt.get(url)
-    {:ok, feed, _} = FeederEx.parse(body)
-    feed
+    case DeviantArt.get(url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, feed, _} = FeederEx.parse(body)
+        {:ok, feed}
+      {:ok, response } ->
+        {:error, response}
+      {:error, error} ->
+        {:error, error}
+    end
+
   end
 
 end

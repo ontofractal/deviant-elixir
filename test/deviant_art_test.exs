@@ -3,7 +3,7 @@ defmodule DeviantArtTest do
   doctest DeviantArt
 
   test "DA docs example rss query" do
-    feed = DeviantArt.rss(%{query: "frogs", category: "digitalart/drawings", sort: "boost:popular+in"})
+    {:ok, feed} = DeviantArt.rss(%{query: "frogs", category: "digitalart/drawings", sort: "boost:popular+in"})
     assert feed.title == "DeviantArt: Popular In:digitalart/drawings frogs"
   end
 end
