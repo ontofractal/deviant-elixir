@@ -12,13 +12,13 @@ defmodule DeviantArt do
      summary: "This is a submission to the FrogginBlog site.<br />\nWe do weekly challenges based on a theme. This one was on Sherlock Holmes. My twist used the children's book series \"Frog and Toad are Friends\"...<br />\n<br />\n...so this could be fan art I guess.",
      title: "Frog and Toad are Holmes", updated: "Wed, 06 Dec 2006 11:25:39 PST"}
   """
-  def rss(opts) do
-    %{query: q, category: cat, sort: sort} = opts
-    offset = opts[:offset] || 0
+  def rss(query_opts, headers \\ [], http_opts \\ []) do
+    %{query: q, category: cat, sort: sort} = query_opts
+    offset = query_opts[:offset] || 0
     url = "http://backend.deviantart.com/rss.xml?type=deviation&q=#{sort}:#{cat}+#{q}&offset=#{offset}"
       |> URI.encode
 
-    case DeviantArt.get(url) do
+    case DeviantArt.get(url, headers, http_opts) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, feed, _} = FeederEx.parse(body)
         {:ok, feed}
